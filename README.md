@@ -56,10 +56,9 @@ Then restart your terminal (or `source ~/.zshrc` / `source ~/.bashrc`).
 
 ```bash
 claude-reset-loop                              # runs forever, reads CLAUDE.md
-claude-reset-loop -f examples/story/CLAUDE.md # custom instruction file
+claude-reset-loop -f claude-nextaction.md      # custom instruction file
 claude-reset-loop -n 5                         # stop after 5 turns
 claude-reset-loop -a my-agent -f task.md       # launch a specific Claude agent
-claude-reset-loop -n 10 --persist              # keep session history between loops
 ```
 
 Your instruction file just needs to end with:
@@ -68,29 +67,32 @@ Your instruction file just needs to end with:
 When you are done, create a file called please-reset-loop.
 ```
 
+> **Note:** The context window is always wiped between loops — a process kill clears everything. What does survive: Claude's own persistent memory at `~/.claude/`. Claude writes to it automatically as it works, and it's always there at the start of the next session. That's the memory Claude can actually rely on across loops.
+
 ---
 
 ## Examples
 
-### story
-Claude writes an ongoing story, one paragraph per loop — each session picks up where the last left off via the file on disk.
+### 1. Global predictions — dumb simple
+Claude appends five predictions for the next year to a file, then resets. Each loop adds another year. Runs forever or until the end of the world.
 
 ```bash
-claude-reset-loop -f examples/story/CLAUDE.md
+claude-reset-loop -f examples/1-simple-global-predictions/CLAUDE.md
 ```
 
-### action-heroes
-Claude researches badass action hero actors and fills a CSV — net worth, total films, most famous role. Adds 3 actors per loop until the list is complete.
+### 2. Most badass action hero — light research
+Claude researches iconic action heroes and fills a CSV — net worth, total films, most famous role. Adds 3 per loop, sorted by net worth.
 
 ```bash
-claude-reset-loop -f examples/action-heroes/CLAUDE.md
+claude-reset-loop -f examples/2-most-badass-action-hero/CLAUDE.md
 ```
 
-### dev-loop
-A full agentic workflow: Planner → Coder → Reviewer, rotating each session. A `memory.md` file persists project state across the clean-slate loops.
+### 3. Michael Scott's dev team — full multi-agent
+A full multi-agent workflow: Googler hunts for intel and assets, Webmaster builds a gloriously over-the-top 90s HTML site, Reviewer makes sure it reflects well on Michael, Chief coordinates and posts tantrums. Each role is a proper Claude agent with scoped tools.
 
 ```bash
-claude-reset-loop -f examples/dev-loop/CLAUDE.md
+cd examples/3-michael-scott-agentic-dev-team
+claude-reset-loop -a chief -f agents-one-shot.md
 ```
 
 ---

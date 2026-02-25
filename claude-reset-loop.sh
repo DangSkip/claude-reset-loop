@@ -5,7 +5,7 @@
 # When done, Claude drops a sentinel file to signal completion.
 # This script detects it, kills Claude, and starts a fresh session.
 #
-# Usage: claude-reset-loop [-f instruction-file] [-n max-turns] [-a agent] [--persist]
+# Usage: claude-reset-loop [-f instruction-file] [-n max-turns] [-a agent]
 
 set -euo pipefail
 
@@ -13,7 +13,6 @@ PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SENTINEL_FILE="$PROJECT_DIR/please-reset-loop"
 INSTRUCTION_FILE="CLAUDE.md"
 MAX_TURNS=0        # 0 = run forever
-PERSIST=false      # false = wipe session history between loops (default)
 AGENT=""           # optional: launch a specific Claude agent
 TURN=0
 
@@ -23,8 +22,7 @@ while [[ $# -gt 0 ]]; do
     -f) INSTRUCTION_FILE="$2"; shift 2 ;;
     -n) MAX_TURNS="$2"; shift 2 ;;
     -a) AGENT="$2"; shift 2 ;;
-    --persist) PERSIST=true; shift ;;
-    *) echo "Usage: $0 [-f instruction-file] [-n max-turns] [-a agent] [--persist]" >&2; exit 1 ;;
+    *) echo "Usage: $0 [-f instruction-file] [-n max-turns] [-a agent]" >&2; exit 1 ;;
   esac
 done
 
@@ -55,14 +53,11 @@ kill_tree() {
 run_with_sentinel() {
   rm -f "$SENTINEL_FILE"
 
-  local session_flags="--no-session-persistence"
-  [[ "$PERSIST" == true ]] && session_flags=""
-
   local agent_flag=""
   [[ -n "$AGENT" ]] && agent_flag="--agent $AGENT"
 
   # Start Claude in the background, piping the prompt to its stdin
-  (cd "$PROJECT_DIR" && echo "$1" | claude -p --dangerously-skip-permissions $session_flags $agent_flag) &
+  (cd "$PROJECT_DIR" && echo "$1" | claude -p --dangerously-skip-permissions $agent_flag) &
   CLAUDE_PID=$!
 
   # Poll every 2s — kill and restart when sentinel file appears
