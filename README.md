@@ -1,6 +1,6 @@
 # claude-reset-loop
 
-**Auto-restart Claude with a fresh context window — forever.**
+**Auto-restart Claude Code with a fresh context window — forever (or till you decide).**
 
 Drop it in any project, point it at an instruction file, and Claude will work, signal done, get killed, and come back fresh. Repeat.
 
@@ -73,22 +73,24 @@ When you are done, create a file called please-reset-loop.
 
 ## Examples
 
-### 1. Global predictions — dumb simple
+Open the folder, check the code, and watch it unfold.
+
+### [1. Global predictions](examples/1-simple-global-predictions) — dumb simple
 Claude appends five predictions for the next year to a file, then resets. Each loop adds another year. Runs forever or until the end of the world.
 
 ```bash
 claude-reset-loop -f examples/1-simple-global-predictions/CLAUDE.md
 ```
 
-### 2. Most badass action hero — light research
+### [2. Most badass action hero](examples/2-most-badass-action-hero) — light research
 Claude researches iconic action heroes and fills a CSV — net worth, total films, most famous role. Adds 3 per loop, sorted by net worth.
 
 ```bash
 claude-reset-loop -f examples/2-most-badass-action-hero/CLAUDE.md
 ```
 
-### 3. Michael Scott's dev team — full multi-agent
-A full multi-agent workflow: Googler hunts for intel and assets, Webmaster builds a gloriously over-the-top 90s HTML site, Reviewer makes sure it reflects well on Michael, Chief coordinates and posts tantrums. Each role is a proper Claude agent with scoped tools.
+### [3. Michael Scott's dev team](examples/3-michael-scott-agentic-dev-team) — full multi-agent
+A full multi-agent workflow: Googler hunts for intel and assets, Webmaster builds a gloriously over-the-top 90s HTML site, Reviewer makes sure it reflects well on Michael, Chief coordinates and posts tantrums. Agents talk to each other. Each role is a proper Claude agent with scoped tools.
 
 ```bash
 cd examples/3-michael-scott-agentic-dev-team
@@ -99,7 +101,7 @@ claude-reset-loop -a chief -f agents-one-shot.md
 
 ## Requirements
 
-- [`claude` CLI](https://github.com/anthropics/claude-code) installed and authenticated
+- [Claude CLI](https://github.com/anthropics/claude-code) installed and authenticated
 - macOS or Linux
 
 > **Windows:** The Claude CLI requires WSL anyway — run this there and it works fine.
