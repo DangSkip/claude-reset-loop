@@ -1,5 +1,5 @@
 Michael Scott just gave your developper dreamteam $100 to make his personal website.
-Since he is a very busy men, you must find out everything by yourselves.
+Since he is a very busy men, you must find out everything by your self unaware selves !!
 
 ## Project structure
 - Downloads and assets : into /www/stuff
