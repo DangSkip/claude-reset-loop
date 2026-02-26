@@ -49,15 +49,14 @@ kill_tree() {
   kill "$pid" 2>/dev/null || true
 }
 
-# Launch Claude in the foreground (output visible), sentinel watcher in the background.
+# Launch Claude, watcher kills it when sentinel appears.
 run_with_sentinel() {
   rm -f "$SENTINEL_FILE"
 
   local agent_flag=""
   [[ -n "$AGENT" ]] && agent_flag="--agent $AGENT"
 
-  # Run Claude in the foreground — prompt passed as argument so stdin stays a TTY
-  (cd "$PROJECT_DIR" && claude -p "$1" --dangerously-skip-permissions $agent_flag) &
+  echo "$1" | (cd "$PROJECT_DIR" && claude --dangerously-skip-permissions $agent_flag) &
   CLAUDE_PID=$!
 
   # Sentinel watcher in the background — kills Claude when it drops the file
