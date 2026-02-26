@@ -45,7 +45,7 @@ Claude never runs out of context mid-task — each session starts clean.
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dangerouslyskippermissions/claude-reset-loop/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/DangSkip/claude-reset-loop/main/install.sh | bash
 ```
 
 Then restart your terminal (or `source ~/.zshrc` / `source ~/.bashrc`).
