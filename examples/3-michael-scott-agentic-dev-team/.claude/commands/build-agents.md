@@ -5,6 +5,8 @@ description: Read an agents source file and create or update the corresponding a
 
 Read the agents source file at `$ARGUMENTS` (default: `agents-one-shot.md` if no argument given).
 
+If the project is a git repo, first run `git diff HEAD -- <source-file>`. If the output is empty, the source hasn't changed since last commit — print "source unchanged, nothing to rebuild" and stop.
+
 For each role defined in that file:
 1. Determine the agent's `name` (lowercase, hyphenated)
 2. Write a one-line `description` for when this agent should be invoked
