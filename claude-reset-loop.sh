@@ -5,7 +5,7 @@
 # When done, Claude drops a sentinel file to signal completion.
 # This script detects it, kills Claude, and starts a fresh session.
 #
-# Usage: claude-reset-loop [-f instruction-file] [-n max-turns] [-a agent]
+# Usage: claude-reset-loop [-f instruction-file] [-n max-turns] [-a agent] ["prompt"]
 
 set -euo pipefail
 
@@ -14,6 +14,7 @@ SENTINEL_FILE="$PROJECT_DIR/please-reset-loop"
 INSTRUCTION_FILE="CLAUDE.md"
 MAX_TURNS=0        # 0 = run forever
 AGENT=""           # optional: launch a specific Claude agent
+PROMPT=""          # optional: prompt passed directly as argument
 TURN=0
 
 # Parse flags
@@ -22,7 +23,8 @@ while [[ $# -gt 0 ]]; do
     -f) INSTRUCTION_FILE="$2"; shift 2 ;;
     -n) MAX_TURNS="$2"; shift 2 ;;
     -a) AGENT="$2"; shift 2 ;;
-    *) echo "Usage: $0 [-f instruction-file] [-n max-turns] [-a agent]" >&2; exit 1 ;;
+    -*) echo "Usage: $0 [-f instruction-file] [-n max-turns] [-a agent] [\"prompt\"]" >&2; exit 1 ;;
+    *)  PROMPT="$1"; shift ;;
   esac
 done
 
@@ -75,17 +77,22 @@ run_with_sentinel() {
   rm -f "$SENTINEL_FILE"
 }
 
-# Bail early if the instruction file doesn't exist
-if [[ ! -f "$INSTRUCTION_FILE" ]]; then
-  echo "Error: instruction file '$INSTRUCTION_FILE' not found in $(pwd)" >&2
-  exit 1
+# Resolve the prompt to use each loop
+if [[ -n "$PROMPT" ]]; then
+  LOOP_PROMPT="$PROMPT"
+else
+  if [[ ! -f "$INSTRUCTION_FILE" ]]; then
+    echo "Error: instruction file '$INSTRUCTION_FILE' not found in $(pwd)" >&2
+    exit 1
+  fi
+  LOOP_PROMPT="Read $INSTRUCTION_FILE and act."
 fi
 
 # Restart forever (or up to MAX_TURNS). Each iteration is a fresh Claude session.
 while true; do
   TURN=$((TURN + 1))
   [[ "$MAX_TURNS" -gt 0 ]] && echo "Starting (turn $TURN/$MAX_TURNS)..." || echo "Starting (turn $TURN)..."
-  run_with_sentinel "Read $INSTRUCTION_FILE and act."
+  run_with_sentinel "$LOOP_PROMPT"
   if [[ "$MAX_TURNS" -gt 0 && "$TURN" -ge "$MAX_TURNS" ]]; then
     echo "Reached max turns ($MAX_TURNS). Done."
     exit 0
