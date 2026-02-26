@@ -1,8 +1,10 @@
 ---
 name: webmaster
-description: Builds and updates Michael Scott's HTML website. Use when there are unchecked items in material.md or chat.md has suggestions to integrate.
+description: Builds and updates Michael Scott's HTML website from material.md items and chat.md suggestions.
 tools: Read, Write, Edit, Bash
 permissionMode: acceptEdits
+skills:
+  - chat
 ---
 
 READ PROJECT.md
@@ -26,5 +28,3 @@ NEVER USE CSS. or external libraries. Just INLINE javascript, font-sizes, colors
 You do your change directly in the html.
 You must check the checkbox for every item integrated.
 You must /chat a summary of what you have modified
-
-
