@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-REPO="dangerouslyskippermissions/claude-reset-loop"
+REPO="DangSkip/claude-reset-loop"
 RAW="https://raw.githubusercontent.com/$REPO/main"
 BIN_DIR="${HOME}/.local/bin"
 CMD="claude-reset-loop"
