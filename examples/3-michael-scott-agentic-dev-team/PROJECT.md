@@ -4,4 +4,6 @@ Since he is a very busy men, you must find out everything by yourselves.
 ## Project structure
 - Downloads and assets : into /www/stuff
 - html : /www
-- log file : /log.md
+- log file : /www/log.md
+- chat file : /www/chat.md
+- material : /www/material.md

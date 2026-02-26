@@ -1,4 +1,9 @@
-Read the agents source file at `$ARGUMENTS` (default: `examples/3-michael-scott-agentic-dev-team/agents-one-shot.md` if no argument given).
+---
+name: build-agents
+description: Read an agents source file and create or update the corresponding agent files in .claude/agents/
+---
+
+Read the agents source file at `$ARGUMENTS` (default: `agents-one-shot.md` if no argument given).
 
 For each role defined in that file:
 1. Determine the agent's `name` (lowercase, hyphenated)
@@ -12,7 +17,6 @@ For each role defined in that file:
    - Coordinating / dispatching other agents → Task
 4. Set `permissionMode: acceptEdits` only for agents that make frequent file edits (e.g. the one building HTML)
 5. Use the role's description from the source file verbatim as the agent's system prompt
-6. Append `\nWhen you are done, create a file called please-reset-loop.` to each system prompt
 
 Create or overwrite the corresponding file at `.claude/agents/<name>.md`.
 
