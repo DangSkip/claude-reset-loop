@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(pwd)"
 SENTINEL_FILE="$PROJECT_DIR/please-reset-loop"
 INSTRUCTION_FILE="CLAUDE.md"
 MAX_TURNS=0        # 0 = run forever
