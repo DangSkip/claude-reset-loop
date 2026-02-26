@@ -76,6 +76,12 @@ run_with_sentinel() {
   rm -f "$SENTINEL_FILE"
 }
 
+# Bail early if the instruction file doesn't exist
+if [[ ! -f "$INSTRUCTION_FILE" ]]; then
+  echo "Error: instruction file '$INSTRUCTION_FILE' not found in $(pwd)" >&2
+  exit 1
+fi
+
 # Restart forever (or up to MAX_TURNS). Each iteration is a fresh Claude session.
 while true; do
   TURN=$((TURN + 1))
